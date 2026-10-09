@@ -1,0 +1,33 @@
+{
+  "experiment": "Local synthetic HTTP fault-injection benchmark",
+  "date_utc": "2026-10-09T03:56:52Z",
+  "host": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.6",
+  "database": "SQLite WAL",
+  "path": "React API contract \u2192 Spring Boot \u2192 FastAPI \u2192 SQL queue \u2192 signed local HTTP receiver",
+  "concurrency": 8,
+  "unique_events": 200,
+  "healthy_events": 80,
+  "transient_failure_events": 100,
+  "permanent_failure_events": 20,
+  "delivered": 180,
+  "recovered_transient": 100,
+  "transient_recovery_percent": 100,
+  "dead_letters": 20,
+  "duplicate_submissions": 200,
+  "duplicates_suppressed": 200,
+  "conflicting_key_http_status": 409,
+  "delivery_attempts": 460,
+  "ingest_seconds": 2.575,
+  "enqueue_p95_ms": 267.93,
+  "observed_enqueue_requests_per_second": 77.66,
+  "delivery_attempt_p95_ms": 173.97,
+  "caveats": [
+    "Synthetic data and controlled local receivers.",
+    "Not production throughput or customer impact.",
+    "p95 enqueue includes Java gateway, Python validation, and SQL commit.",
+    "SQLite run; MySQL deployment recipe has not been benchmarked.",
+    "Backoff is real wall-clock time; worker concurrency is 8.",
+    "At-least-once delivery requires consumer deduplication."
+  ]
+}
