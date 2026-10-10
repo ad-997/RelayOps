@@ -16,10 +16,12 @@ public class DispatchController {
    client=RestClient.builder().baseUrl(url).defaultHeader("X-API-Key",key).build();
  }
  public record DispatchRequest(@NotBlank @Size(max=200) String key,
-   @Pattern(regexp="healthy|flaky|offline") @NotNull String endpoint,@NotNull Map<String,Object> payload) {}
+   @Pattern(regexp="[a-zA-Z][a-zA-Z0-9_-]{0,39}") @NotNull String endpoint,@NotNull Map<String,Object> payload) {}
  @PostMapping("/events") public ResponseEntity<String> dispatch(@Valid @RequestBody DispatchRequest body) {
    return client.post().uri("/api/events").contentType(MediaType.APPLICATION_JSON).body(body).retrieve().toEntity(String.class);
  }
+ @GetMapping("/healthz") public ResponseEntity<String> health() { return get("/healthz"); }
+ @GetMapping("/destinations") public ResponseEntity<String> destinations() { return get("/api/destinations"); }
  @GetMapping("/metrics") public ResponseEntity<String> metrics() { return get("/api/metrics"); }
  @GetMapping("/events") public ResponseEntity<String> events(@RequestParam(required=false) String status,
     @RequestParam(defaultValue="100") int limit) {
