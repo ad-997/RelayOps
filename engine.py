@@ -4,11 +4,13 @@ from pathlib import Path
 
 class Conflict(ValueError): pass
 class Queue:
-    """Portable transactional queue. SQLite for local runs; MySQL for compose."""
+    """Portable transactional queue. SQLite locally; MySQL or PostgreSQL for hosted storage."""
     def __init__(self,path,clock=time.time,max_attempts=4,base_delay=1):
         import sqlalchemy as sa
         self.sa=sa;self.clock=clock;self.max_attempts=max_attempts;self.base_delay=base_delay
         url=str(path) if "://" in str(path) else "sqlite:///"+str(path)
+        if url.startswith('postgres://'):url='postgresql+psycopg://'+url[len('postgres://'):]
+        elif url.startswith('postgresql://'):url='postgresql+psycopg://'+url[len('postgresql://'):]
         self.engine=sa.create_engine(url,pool_pre_ping=True,connect_args={"timeout":20} if url.startswith('sqlite:') else {})
         self.sqlite=self.engine.dialect.name=='sqlite'
         m=sa.MetaData()

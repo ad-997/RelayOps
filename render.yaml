@@ -1,18 +1,15 @@
+# Free web service + external Neon Free Postgres. No paid disks/resources.
 services:
   - type: web
-    name: relayops
+    name: relayops-ad-997
     runtime: docker
-    plan: starter
+    plan: free
     healthCheckPath: /api/healthz
-    disk:
-      name: delivery-ledger
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: RELAY_ENV
         value: production
       - key: RELAY_DB
-        value: /var/data/relay.db
+        sync: false
       - key: RELAY_SECRET
         generateValue: true
       - key: RELAY_API_KEY
@@ -20,4 +17,4 @@ services:
       - key: RELAY_DEMO_RECEIVERS
         value: "true"
       - key: RELAY_DESTINATIONS
-        sync: false
+        value: "{}"
