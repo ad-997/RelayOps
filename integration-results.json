@@ -1,0 +1,10 @@
+{
+  "environment": "local real HTTP, SQLite, separate fulfillment receiver",
+  "unauthorized_submission_rejected": true,
+  "duplicate_submission_suppressed": true,
+  "outage_attempts_retained": 4,
+  "history_survived_worker_restart": true,
+  "replay_delivered_after_recovery": true,
+  "total_attempts_preserved": 5,
+  "fulfillment_orders_created": 1
+}

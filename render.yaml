@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: relayops
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/healthz
+    disk:
+      name: delivery-ledger
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: RELAY_ENV
+        value: production
+      - key: RELAY_DB
+        value: /var/data/relay.db
+      - key: RELAY_SECRET
+        generateValue: true
+      - key: RELAY_API_KEY
+        generateValue: true
+      - key: RELAY_DEMO_RECEIVERS
+        value: "true"
+      - key: RELAY_DESTINATIONS
+        sync: false
