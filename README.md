@@ -165,8 +165,15 @@ This starts a separate fulfillment application and the Java/Python services on l
 
 ## Hosting
 
-The root Dockerfile builds the React UI and Java gateway and runs the Python worker privately in the same container. start_services.py terminates the container if either process exits. render.yaml defines a small paid service with a 1 GB persistent disk, generated secrets, and /api/healthz health checks. No hosted URL is claimed until deployment succeeds.
+The root Dockerfile builds the React UI and Java gateway and runs the Python worker privately in the same container. start_services.py terminates the container if either process exits. render.yaml defines a free Render service with an external Neon Free Postgres database, generated secrets, and /api/healthz health checks.
 
-Only the Java port is public; the Python worker binds to localhost. The queue lives at /var/data/relay.db on the persistent disk. All /api routes except the basic health check require the API key. In Render, enter RELAY_DESTINATIONS as {} to run only clearly labeled simulated receivers, or supply your actual HTTPS integration map. Set RELAY_DEMO_RECEIVERS=false to remove fixtures.
+Only the Java port is public; the Python worker binds to localhost. The hosted queue lives in Neon Postgres, outside the temporary container filesystem. Set RELAY_DB to the Neon connection string with SSL enabled. All /api routes except the basic health check require the API key. In Render, enter RELAY_DESTINATIONS as {} to run only clearly labeled simulated receivers, or supply your actual HTTPS integration map. Set RELAY_DEMO_RECEIVERS=false to remove fixtures.
 
-This single-instance edition has downtime during restart/deploy and a single API key for trusted operators. It is suitable for a small controlled integration, not an open multi-tenant SaaS. Monitor disk growth and take backups; retention and automatic archival are not implemented. Never send actual payment credentials or sensitive customer data into portfolio demos.
+This single-instance edition has downtime during restart/deploy and a single API key for trusted operators. It is suitable for a small controlled integration, not an open multi-tenant SaaS. Monitor database usage and take backups; retention and automatic archival are not implemented. Never send actual payment credentials or sensitive customer data into portfolio demos.
+
+
+### Free-hosting behavior
+
+Render Free sleeps after 15 minutes without incoming traffic and may take roughly a minute to wake. Retry processing pauses while asleep and resumes when the service wakes. Events remain in Neon Postgres; the queue’s lease recovery restores interrupted deliveries. This is a working hobby deployment with delayed recovery during sleep, not a continuously available production service. There is no keep-awake workaround. Both accounts stay on their free plans; usage limits can suspend access rather than provide unlimited capacity.
+
+The public dashboard requires the service API key from Render’s Environment page. Do not publish that key or include it in the portfolio. An authenticated operator can use the API from another application; destination URLs are registered by the operator in Render’s RELAY_DESTINATIONS setting.
