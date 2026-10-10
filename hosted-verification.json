@@ -1,0 +1,40 @@
+{
+  "verified_on": "2026-10-10",
+  "url": "https://relayops-ad-997.onrender.com/",
+  "hosting": {
+    "web": "Render Free",
+    "database": "Neon Free PostgreSQL",
+    "paid_resources_created": false
+  },
+  "deployment": {
+    "id": "dep-db540kqd0e5s73e4ckh0",
+    "commit": "2aca6689bfa92caa228ba3011dc5d7c857f4f77a",
+    "state": "Live"
+  },
+  "checks": {
+    "health_http_status": 200,
+    "unauthenticated_events_http_status": 401,
+    "healthy_delivery_attempts": 1,
+    "transient_delivery_status_codes": [
+      503,
+      503,
+      200
+    ],
+    "permanent_failure_attempts_before_dead_letter": 4,
+    "event_rows_preserved_after_confirmed_restart": 3,
+    "attempt_history_preserved_after_restart": true,
+    "manual_replay_preserved_total_attempts": 8
+  },
+  "controlled_event_ids": {
+    "healthy": "322a4ced",
+    "flaky": "3023f674-b208-4135-a1d8-1e59f289b5a6",
+    "offline": "30adbba0-2552-441a-b88c-c74408f564f3"
+  },
+  "limitations": [
+    "Hosted receivers in this check are simulated fixtures.",
+    "Real integration destinations are operator-configured; no customer usage claimed.",
+    "Render Free sleeps after inactivity: retry processing pauses until wake.",
+    "Single service API key; no multi-tenant authorization."
+  ],
+  "local_integration_evidence": "integration-results.json"
+}

@@ -4,7 +4,7 @@ A working multi-service engineering project: **React → Java Spring Boot → Py
 
 It solves the delivery side of a common integration failure: accepting an event does not mean the downstream receiver is available. Events persist independently of delivery, producers can safely retry their submission, transient failures recover automatically, and persistent failures remain inspectable and replayable.
 
-Supports operator-configured real destinations and a separate fulfillment receiver example. Local integration checks pass; public deployment is pending hosting access. Customer usage and production capacity are not claimed.
+Supports operator-configured real destinations and a separate fulfillment receiver example. Local integration checks pass. The live backend is https://relayops-ad-997.onrender.com/ (API key required). Customer usage and production capacity are not claimed.
 
 ## Implemented
 
@@ -177,3 +177,8 @@ This single-instance edition has downtime during restart/deploy and a single API
 Render Free sleeps after 15 minutes without incoming traffic and may take roughly a minute to wake. Retry processing pauses while asleep and resumes when the service wakes. Events remain in Neon Postgres; the queue’s lease recovery restores interrupted deliveries. This is a working hobby deployment with delayed recovery during sleep, not a continuously available production service. There is no keep-awake workaround. Both accounts stay on their free plans; usage limits can suspend access rather than provide unlimited capacity.
 
 The public dashboard requires the service API key from Render’s Environment page. Do not publish that key or include it in the portfolio. An authenticated operator can use the API from another application; destination URLs are registered by the operator in Render’s RELAY_DESTINATIONS setting.
+
+
+### Hosted verification (10 October 2026)
+
+Render deployed the combined container successfully, backed by Neon PostgreSQL. Hosted checks passed health (200), unauthenticated event access rejection (401), healthy delivery in one attempt, transient delivery after two 503 responses, and persistent failure retained after four attempts. Render confirmed a service restart; all three event records and the attempt history remained after a fresh browser reload and authentication. These are controlled hosted checks, not customer traffic or production load measurements. See hosted-verification.json.
